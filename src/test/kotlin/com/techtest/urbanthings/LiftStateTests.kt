@@ -130,4 +130,30 @@ class LiftStateTests {
 
         assertEquals(LiftState.Direction.NONE, liftState.shouldMoveIn())
     }
+
+    @Test
+    fun testMove_UP() {
+        val lift = Lift(2000, 2)
+
+        val liftState = LiftState(lift)
+
+        liftState.currentFloor = 1
+
+        liftState.move(LiftState.Direction.UP)
+
+        assertEquals(2, liftState.currentFloor)
+    }
+
+    @Test
+    fun testMove_DOWN() {
+        val lift = Lift(2000, 2)
+
+        val liftState = LiftState(lift)
+
+        liftState.currentFloor = 2
+
+        liftState.move(LiftState.Direction.DOWN)
+
+        assertEquals(1, liftState.currentFloor)
+    }
 }
