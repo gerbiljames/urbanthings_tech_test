@@ -1,6 +1,7 @@
 package com.techtest.urbanthings.model
 
-data class Lift(val capacity: Int) {
-    var passengers = mutableListOf<Passenger>()
-    var currentFloor = 1
-}
+/**
+ * Holds the basic properties of a Lift.
+ */
+data class Lift(val weightCapacity: Int,
+                val passengerCapacity: Int)
