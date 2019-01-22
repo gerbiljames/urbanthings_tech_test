@@ -6,6 +6,9 @@ import java.util.*
 
 /**
  * Class to manage a List of lift states and a Queue of Passengers.
+ *
+ * Note that this solution assumes British queueing rules, passengers cannot skip to the front of the queue if they
+ * could fit into a lift which passengers in front of them could not.
  */
 class LiftManager(
     private val liftStates: List<LiftState>,
@@ -46,6 +49,9 @@ class LiftManager(
      */
     private fun advanceLiftState(liftState: LiftState): Boolean {
 
+        // The order here matters. Its logical, we have to exit passengers before we board them and we have to
+        // have both exited and boarded passengers before we move.
+
         if (exitIfNeeded(liftState)) {
             println("Unloading at floor ${liftState.currentFloor}")
             return true
@@ -73,12 +79,16 @@ class LiftManager(
      */
     private fun boardIfNeeded(liftState: LiftState, passengers: Queue<Passenger>): Boolean {
 
+        // We can only board passengers at floor 1.
         if (liftState.currentFloor != 1) return false
 
+        // We can only board passengers if we have passengers to board.
         if (passengers.size == 0) return false
 
+        // If we can't board the next passenger in the queue then we cant board.
         if (!liftState.canBoard(passengers.peek())) return false
 
+        // Board passengers until we no longer can.
         while (passengers.size > 0 && liftState.canBoard(passengers.peek())) {
             liftState.board(passengers.poll())
         }
@@ -93,6 +103,7 @@ class LiftManager(
      */
     private fun exitIfNeeded(liftState: LiftState): Boolean {
 
+        // Only exit passengers if we need to.
         if (!liftState.needsExit) return false
 
         liftState.exit()
