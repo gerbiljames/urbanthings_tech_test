@@ -25,6 +25,9 @@ fun calculateLiftTicks(weights: Array<Int>, destinations: Array<Int>, floors: In
     // We can't carry passengers above max weight.
     if (!weights.none { it > maxWeight }) throw IllegalArgumentException("passenger above max weight")
 
+    // We need at least one lift.
+    if (numberOfLifts == 0) throw IllegalArgumentException("at least one lift is required")
+
     // Create the Lift model.
     val lift = Lift(maxWeight, maxPassengers)
 
