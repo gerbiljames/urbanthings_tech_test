@@ -7,7 +7,7 @@ import java.util.*
 import java.util.concurrent.LinkedBlockingQueue
 
 /**
- * Class to manage the state of a Lift and a Queue of Passengers.
+ * Class to manage a List of lift states and a Queue of Passengers.
  */
 class LiftManager(
     private val liftStates: List<LiftState>,
