@@ -1,19 +1,28 @@
 package com.techtest.urbanthings
 
 import com.techtest.urbanthings.model.Passenger
+import com.techtest.urbanthings.state.ExpressLiftState
 import com.techtest.urbanthings.state.LiftState
 import java.util.*
+import java.util.concurrent.LinkedBlockingQueue
 
 /**
  * Class to manage the state of a Lift and a Queue of Passengers.
  */
 class LiftManager(
     private val liftStates: List<LiftState>,
-    private val passengers: Queue<Passenger>
+    passengerQueue: Queue<Passenger>
 ) {
+
+    private val passengers: Queue<Passenger> = LinkedBlockingQueue()
+    private val expressPassengers: Queue<Passenger> = LinkedBlockingQueue()
 
     init {
         println("Tick\tLift Status")
+        while (!passengerQueue.isEmpty()) {
+            val passenger = passengerQueue.poll()
+            if (passenger.floor % 2 == 0) expressPassengers.offer(passenger) else passengers.offer(passenger)
+        }
     }
 
     /**
@@ -32,7 +41,7 @@ class LiftManager(
         print("$time")
 
         val stateModified = liftStates.mapIndexed { index, it ->
-            print("\t\tLift ${index + 1}: " )
+            print("\t\t${if (it is ExpressLiftState) "Express " else ""}Lift ${index + 1}: ")
             advanceLiftState(it)
         }.reduce { acc, b -> acc || b }
 
@@ -51,12 +60,12 @@ class LiftManager(
             return true
         }
 
-        if (boardIfNeeded(liftState, passengers)) {
+        if (boardIfNeeded(liftState, if (liftState is ExpressLiftState) expressPassengers else passengers)) {
             println("Loading at floor ${liftState.currentFloor}")
             return true
         }
 
-        if (moveIfNeeded(liftState))  {
+        if (moveIfNeeded(liftState)) {
             println("Moving to floor ${liftState.currentFloor}")
             return true
         }

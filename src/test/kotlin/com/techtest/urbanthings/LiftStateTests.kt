@@ -14,7 +14,7 @@ class LiftStateTests {
         val lift = Lift(200, 2)
         val liftState = LiftState(lift)
 
-        assertEquals(true, liftState.canBoard(Passenger(50, 2)))
+        assertEquals(true, liftState.canBoard(Passenger(50, 3)))
     }
 
     @Test
@@ -24,7 +24,7 @@ class LiftStateTests {
 
         liftState.board(Passenger(160, 2))
 
-        assertEquals(false, liftState.canBoard(Passenger(50, 2)))
+        assertEquals(false, liftState.canBoard(Passenger(50, 3)))
     }
 
     @Test
@@ -35,7 +35,7 @@ class LiftStateTests {
         liftState.board(Passenger(160, 2))
         liftState.board(Passenger(150, 2))
 
-        assertEquals(false, liftState.canBoard(Passenger(50, 2)))
+        assertEquals(false, liftState.canBoard(Passenger(50, 3)))
     }
 
     @Test
@@ -43,10 +43,10 @@ class LiftStateTests {
         val lift = Lift(2000, 2)
         val liftState = LiftState(lift)
 
-        liftState.board(Passenger(160, 2))
-        liftState.board(Passenger(150, 2))
+        liftState.board(Passenger(160, 3))
+        liftState.board(Passenger(150, 3))
 
-        liftState.currentFloor = 2
+        liftState.currentFloor = 3
 
         assertEquals(true, liftState.needsExit)
     }
@@ -56,10 +56,10 @@ class LiftStateTests {
         val lift = Lift(2000, 2)
         val liftState = LiftState(lift)
 
-        liftState.board(Passenger(160, 3))
-        liftState.board(Passenger(150, 3))
+        liftState.board(Passenger(160, 5))
+        liftState.board(Passenger(150, 5))
 
-        liftState.currentFloor = 2
+        liftState.currentFloor = 3
 
         assertEquals(false, liftState.needsExit)
     }
@@ -70,9 +70,9 @@ class LiftStateTests {
 
         val liftState = LiftState(lift)
 
-        liftState.board(Passenger(160, 2))
+        liftState.board(Passenger(160, 5))
         liftState.board(Passenger(150, 3))
-        liftState.currentFloor = 2
+        liftState.currentFloor = 3
 
         assertEquals(true, liftState.needsExit)
 
@@ -104,7 +104,7 @@ class LiftStateTests {
         liftState.board(Passenger(160, 2))
         liftState.board(Passenger(150, 3))
 
-        liftState.currentFloor = 2
+        liftState.currentFloor = 3
 
         assertEquals(LiftState.Direction.NONE, liftState.shouldMoveIn())
     }
@@ -115,7 +115,7 @@ class LiftStateTests {
 
         val liftState = LiftState(lift)
 
-        liftState.currentFloor = 2
+        liftState.currentFloor = 3
 
         assertEquals(LiftState.Direction.DOWN, liftState.shouldMoveIn())
     }

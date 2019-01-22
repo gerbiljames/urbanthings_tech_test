@@ -6,3 +6,4 @@ val floors = 5
 val maxPassengers = 2
 val maxWeight = 200
 val numberOfLifts = 5
+val numberOfExpressLifts = 2

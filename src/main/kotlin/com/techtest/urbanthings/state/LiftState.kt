@@ -22,14 +22,14 @@ open class LiftState(private val lift: Lift) {
     /**
      * Checks if it is possible to board a given passenger.
      */
-    fun canBoard(passenger: Passenger): Boolean =
+    open fun canBoard(passenger: Passenger): Boolean =
         currentPassengerCapacity + 1 <= lift.passengerCapacity &&
                 currentWeightCapacity + passenger.weight <= lift.weightCapacity
 
     /**
      * Boards a given passenger.
      */
-    fun board(passenger: Passenger) {
+    open fun board(passenger: Passenger) {
 
         if (!canBoard(passenger)) throw IllegalArgumentException("Over capacity!")
 
@@ -66,7 +66,7 @@ open class LiftState(private val lift: Lift) {
     /**
      * Moves the Lift in a given direction.
      */
-    fun move(direction: Direction) {
+    open fun move(direction: Direction) {
 
         when (direction) {
             Direction.UP -> currentFloor++
