@@ -7,13 +7,14 @@ import java.util.*
 import java.util.concurrent.LinkedBlockingQueue
 
 fun main(args: Array<String>) {
-    calculateLiftTicks(weights, destinations, floors, maxPassengers, maxWeight)
+    calculateLiftTicks(weights, destinations, floors, maxPassengers, maxWeight, numberOfLifts)
 }
 
 /**
  * Function required by the specification.
  */
-fun calculateLiftTicks(weights: Array<Int>, destinations: Array<Int>, floors: Int, maxPassengers: Int, maxWeight: Int) {
+fun calculateLiftTicks(weights: Array<Int>, destinations: Array<Int>, floors: Int, maxPassengers: Int, maxWeight: Int,
+                       numberOfLifts: Int) {
 
     // We don't want to continue if weights and destinations are different sizes.
     if (weights.size != destinations.size) throw IllegalArgumentException("weights.size != destinations.size")
@@ -27,8 +28,8 @@ fun calculateLiftTicks(weights: Array<Int>, destinations: Array<Int>, floors: In
     // Create the Lift model.
     val lift = Lift(maxWeight, maxPassengers)
 
-    // Create the Lift state providing the model.
-    val liftState = LiftState(lift)
+    // Create the Lift states providing the model. We can share the same model since it is immutable.
+    val liftState = List(numberOfLifts) { LiftState(lift) }
 
     // Create the Passenger Queue and populate it.
     val passengers: Queue<Passenger> = LinkedBlockingQueue<Passenger>()

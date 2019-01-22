@@ -8,7 +8,7 @@ import java.util.*
  * Class to manage the state of a Lift and a Queue of Passengers.
  */
 class LiftManager(
-    private val liftState: LiftState,
+    private val liftStates: List<LiftState>,
     private val passengers: Queue<Passenger>
 ) {
 
@@ -29,9 +29,16 @@ class LiftManager(
     fun advance(): Boolean {
         time++
 
-        print("$time\t\t")
+        print("$time")
 
-        return advanceLiftState(liftState)
+        val stateModified = liftStates.mapIndexed { index, it ->
+            print("\t\tLift ${index + 1}: " )
+            advanceLiftState(it)
+        }.reduce { acc, b -> acc || b }
+
+        println(if (stateModified) "" else "\t\tCompleted")
+
+        return stateModified
     }
 
     /**
@@ -54,7 +61,7 @@ class LiftManager(
             return true
         }
 
-        println("Completed")
+        println("Idle ")
 
         return false
     }
